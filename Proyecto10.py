@@ -27,7 +27,6 @@ except:
     print "Error al abrir fichero"
     exit()
 
-fOutput.writelines("Hola")
 while (1):
     obtenerDatos(4281,fOutput,fLog)
     time.sleep(30)
