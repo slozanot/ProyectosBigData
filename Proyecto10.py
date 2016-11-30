@@ -5,9 +5,12 @@ import time
 
 def guardarDatosObtenidos (diccionario,ficheroSalida,*args):
     for i in range(diccionario['arrives'].__len__()):
-        for dato in {'busId', 'busTimeLeft'}:
-            print dato, ': ', diccionario['arrives'][i][dato]
-            ficheroSalida.writelines(dato, ': ', diccionario['arrives'][i][dato])
+        fOutput.writelines(str("Tiempo llegada: "))
+        fOutput.writelines(str(diccionario['arrives'][i]['busTimeLeft']))
+        fOutput.writelines(str(" Identificador bus: "))
+        fOutput.writelines(str(diccionario['arrives'][i]['busId']))
+        fOutput.writelines("\t")
+    ficheroSalida.writelines("\n")
 
 def obtenerDatos(numeroParada,ficheroSalida,ficheroLog):
     try:
@@ -28,6 +31,6 @@ except:
     exit()
 
 while (1):
-    obtenerDatos(4281,fOutput,fLog)
-    time.sleep(30)
 
+    obtenerDatos(4281,fOutput,fLog)
+    time.sleep(2)
