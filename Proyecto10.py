@@ -3,7 +3,7 @@ import urllib2
 import json
 import time
 
-def guardarDatosObtenidos (diccionario,ficheroSalida,*args):
+def guardarDatosObtenidos (diccionario,ficheroSalida):
     for i in range(diccionario['arrives'].__len__()):
         fOutput.writelines(str("Tiempo llegada: "))
         fOutput.writelines(str(diccionario['arrives'][i]['busTimeLeft']))
@@ -19,7 +19,7 @@ def obtenerDatos(numeroParada,ficheroSalida,ficheroLog):
         data = urllib.urlencode(values)
         response = urllib2.urlopen(url=url,data=data)
         the_page = response.read()
-        guardarDatosObtenidos(json.loads(the_page),ficheroSalida,'lineId','busId','destination','busTimeLeft')
+        guardarDatosObtenidos(json.loads(the_page),ficheroSalida)
     except:
         ficheroLog.writelines("Error al solicitar los datos")
         return
