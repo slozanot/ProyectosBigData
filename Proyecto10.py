@@ -3,14 +3,22 @@ import urllib2
 import json
 import time
 
-def guardarDatosObtenidos (diccionario,ficheroSalida):
+def guardarDatosObtenidos (diccionario,ficheroSalida,ficheroLog):
     for i in range(diccionario['arrives'].__len__()):
-        fOutput.writelines(str("Tiempo llegada: "))
-        fOutput.writelines(str(diccionario['arrives'][i]['busTimeLeft']))
-        fOutput.writelines(str(" Identificador bus: "))
-        fOutput.writelines(str(diccionario['arrives'][i]['busId']))
-        fOutput.writelines("\t")
-    ficheroSalida.writelines("\n")
+        try:
+            ficheroSalida.writelines(str("Tiempo llegada: "))
+            ficheroSalida.writelines(str(diccionario['arrives'][i]['busTimeLeft']))
+            ficheroSalida.writelines(str(" Identificador bus: "))
+            ficheroSalida.writelines(str(diccionario['arrives'][i]['busId']))
+            ficheroSalida.writelines("\t")
+        except:
+            ficheroLog.writelines(time.strftime("%H%M"))
+            ficheroLog.writelines("Error al escribir los datos")
+    try:
+        ficheroSalida.writelines("\n")
+    except:
+        ficheroLog.writelines(time.strftime("%H%M"))
+        ficheroLog.writelines("Error al escribir los datos")
 
 def obtenerDatos(numeroParada,ficheroSalida,ficheroLog):
     try:
@@ -19,18 +27,22 @@ def obtenerDatos(numeroParada,ficheroSalida,ficheroLog):
         data = urllib.urlencode(values)
         response = urllib2.urlopen(url=url,data=data)
         the_page = response.read()
-        guardarDatosObtenidos(json.loads(the_page),ficheroSalida)
+        guardarDatosObtenidos(json.loads(the_page),ficheroSalida,ficheroLog)
     except:
+        ficheroLog.writelines(time.strftime("%H%M"))
         ficheroLog.writelines("Error al solicitar los datos")
         return
-try:
-    fOutput = open("Output.txt","w")
-    fLog = open("Log.txt","w")
-except:
-    print "Error al abrir fichero"
-    exit()
 
-while (1):
-
-    obtenerDatos(4281,fOutput,fLog)
-    time.sleep(2)
+while(1):
+    while((time.strftime("%H%M")>="0715")and(time.strftime("%H%M")<="2215")):
+        try:
+            fOutput = open("Output.txt", "a")
+            fLog = open("Log.txt", "a")
+        except:
+            print "Error al abrir fichero"
+            exit()
+        obtenerDatos(4281,fOutput,fLog)
+        time.sleep(300)
+        fOutput.close()
+        fLog.close()
+    time.sleep(32400)
