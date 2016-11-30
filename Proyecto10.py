@@ -31,7 +31,7 @@ def obtenerDatos(numeroParada,ficheroSalida,ficheroLog):
     except:
         ficheroLog.writelines(time.strftime("%H%M"))
         ficheroLog.writelines("Error al solicitar los datos")
-        return
+        time.sleep(2)
 
 while(1):
     while((time.strftime("%H%M")>="0715")and(time.strftime("%H%M")<="2215")):
@@ -45,4 +45,4 @@ while(1):
         time.sleep(300)
         fOutput.close()
         fLog.close()
-    time.sleep(32500)
+    time.sleep(32400)
